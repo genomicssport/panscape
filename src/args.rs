@@ -1,10 +1,6 @@
 use clap::{Parser, Subcommand};
 #[derive(Debug, Parser)]
-#[command(
-    name = "nanoporepacbio",
-    version = "1.0",
-    about = "nanoporepacbio"
-)]
+#[command(name = "nanoporepacbio", version = "1.0", about = "nanoporepacbio")]
 pub struct CommandParse {
     /// subcommands for the specific actions
     #[command(subcommand)]
@@ -56,5 +52,19 @@ pub enum Commands {
         fastqfile: String,
         /// read length for filtering
         length: String,
+    },
+    /// remove the clip regions from the reads
+    ClipSeq {
+        /// provide the path to the fastq file
+        fastqfile: String,
+        /// provide the sequences to be clipped.
+        clippedseq: String,
+    },
+    /// remove the multitags for the fastqfile
+    MultiClipSeq {
+        /// provide the path to the fastq file
+        fastqfile: String,
+        /// provide the path to the text file
+        clipseqfile: String,
     },
 }

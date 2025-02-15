@@ -1,19 +1,23 @@
 mod args;
 mod clipper;
+mod clipseq;
 mod fastaconvert;
 mod filesplitpattern;
 mod filter;
 mod motifcatcher;
 mod motifone;
+mod multiclipseq;
 mod nanoporepacbio;
 mod selectedreads;
 use crate::args::CommandParse;
 use crate::args::Commands;
 use crate::clipper::clipperpattern;
+use crate::clipseq::clipseqa;
 use crate::fastaconvert::fastaconvertall;
 use crate::filter::readlength;
 use crate::motifcatcher::motifcatcherupdown;
 use crate::motifone::motifsearch;
+use crate::multiclipseq::multiclipseqa;
 use crate::selectedreads::selected;
 use clap::Parser;
 
@@ -67,6 +71,20 @@ fn main() {
                 "The file with the selected ids have been written:{:?}",
                 command
             );
+        }
+        Commands::ClipSeq {
+            fastqfile,
+            clippedseq,
+        } => {
+            let command = clipseqa(fastqfile, &clippedseq).unwrap();
+            println!("The regions have been clipped:{:?}", command);
+        }
+        Commands::MultiClipSeq {
+            fastqfile,
+            clipseqfile,
+        } => {
+            let command = multiclipseqa(fastqfile, clipseqfile).unwrap();
+            println!("The file with the clipseq have been clipped:{:?}", command);
         }
     }
 }

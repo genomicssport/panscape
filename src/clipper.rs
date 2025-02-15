@@ -6,6 +6,14 @@ use std::fs::File;
 use std::io::Write;
 use std::io::{BufRead, BufReader};
 
+/*
+
+ Author Gaurav Sablok
+ SLB Potsdam
+ Date: 2025-2-15
+
+*/
+
 pub fn clipperpattern(path: &str, regionfile: &str) -> Result<String, Box<dyn Error>> {
     let unpack: Vec<Sequence> = fastareturn(path).unwrap();
     let filecontent = File::open(regionfile).expect("file not present");
