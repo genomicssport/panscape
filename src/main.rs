@@ -4,6 +4,7 @@ mod clipseq;
 mod fastaconvert;
 mod filesplitpattern;
 mod filter;
+mod minimap;
 mod motifcatcher;
 mod motifone;
 mod multiclipseq;
@@ -15,6 +16,7 @@ use crate::clipper::clipperpattern;
 use crate::clipseq::clipseqa;
 use crate::fastaconvert::fastaconvertall;
 use crate::filter::readlength;
+use crate::minimap::minimapalignment;
 use crate::motifcatcher::motifcatcherupdown;
 use crate::motifone::motifsearch;
 use crate::multiclipseq::multiclipseqa;
@@ -76,7 +78,7 @@ fn main() {
             fastqfile,
             clippedseq,
         } => {
-            let command = clipseqa(fastqfile, &clippedseq).unwrap();
+            let command = clipseqa(fastqfile, clippedseq).unwrap();
             println!("The regions have been clipped:{:?}", command);
         }
         Commands::MultiClipSeq {
@@ -85,6 +87,15 @@ fn main() {
         } => {
             let command = multiclipseqa(fastqfile, clipseqfile).unwrap();
             println!("The file with the clipseq have been clipped:{:?}", command);
+        }
+        Commands::Minimap {
+            fastqfile,
+            minimap,
+            proteins,
+            thread,
+        } => {
+            let command = minimapalignment(fastqfile, minimap, proteins, thread).unwrap();
+            println!("The results of the same are as follows:{:?}", command);
         }
     }
 }

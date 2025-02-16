@@ -28,7 +28,7 @@ pub enum Commands {
         /// motif to be scanned
         motifscan: String,
     },
-    /// scans the reads for the selected region and select the upstream and the downstream.
+    /// motif plus upstream and the downstream.
     Motifcatcher {
         /// provide the path to the fastq file
         fastqfile: String,
@@ -66,5 +66,16 @@ pub enum Commands {
         fastqfile: String,
         /// provide the path to the text file
         clipseqfile: String,
+    },
+    /// annotate reads
+    Minimap {
+        /// provide the path to the fastq file
+        fastqfile: String,
+        /// provide the path to the proteins
+        proteins: String,
+        /// provide the path the minimap
+        minimap: String,
+        /// provide the number of the threads
+        thread: String,
     },
 }
