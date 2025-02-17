@@ -67,6 +67,15 @@ pub enum Commands {
         /// provide the path to the text file
         clipseqfile: String,
     },
+    /// assemble pangenome
+    Pangenome {
+        /// provide the path to the pacbiohifi reads
+        fastqfile: String,
+        /// provde the thread
+        thread: i32,
+        /// provide the path to the protein file
+        proteinfasta: String,
+    },
     /// annotate reads
     Minimap {
         /// provide the path to the fastq file
@@ -77,5 +86,15 @@ pub enum Commands {
         minimap: String,
         /// provide the number of the threads
         thread: String,
+    },
+    /// annotated stats for your file
+    Stat {
+        /// path to the fastq file
+        fastqfile: String,
+    },
+    /// pangenome pre-computed alignment
+    PangenomeSummarize {
+        /// path to the pangenome alignment
+        pangenome: String,
     },
 }

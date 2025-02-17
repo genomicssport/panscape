@@ -9,7 +9,10 @@ mod motifcatcher;
 mod motifone;
 mod multiclipseq;
 mod nanoporepacbio;
+mod pafpangenome;
+mod pangenome;
 mod selectedreads;
+mod stat;
 use crate::args::CommandParse;
 use crate::args::Commands;
 use crate::clipper::clipperpattern;
@@ -20,9 +23,11 @@ use crate::minimap::minimapalignment;
 use crate::motifcatcher::motifcatcherupdown;
 use crate::motifone::motifsearch;
 use crate::multiclipseq::multiclipseqa;
+use crate::pafpangenome::pangenome_summarize;
+use crate::pangenome::pangenome_hifiasm;
 use crate::selectedreads::selected;
+use crate::stat::stats;
 use clap::Parser;
-
 /*
  Author Gaurav Sablok
  SLB Potsdam
@@ -96,6 +101,25 @@ fn main() {
         } => {
             let command = minimapalignment(fastqfile, minimap, proteins, thread).unwrap();
             println!("The results of the same are as follows:{:?}", command);
+        }
+        Commands::Pangenome {
+            fastqfile,
+            thread,
+            proteinfasta,
+        } => {
+            let command = pangenome_hifiasm(fastqfile, thread, proteinfasta).unwrap();
+            println!(
+                "The pangenome has been assembled using the pacbiohifi reads:{:?}",
+                command
+            );
+        }
+        Commands::Stat { fastqfile } => {
+            let command = stats(fastqfile).unwrap();
+            println!("The stats for your file is as follows:{:?}", command);
+        }
+        Commands::PangenomeSummarize { pangenome } => {
+            let command = pangenome_summarize(pangenome).unwrap();
+            println!("The pangenome has been summarized:{:?}", command);
         }
     }
 }
