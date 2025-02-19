@@ -1,4 +1,4 @@
-# nanopore-pacbio-all
+# panscape
  - from reads to alignments to pangenome, metagenome inclduing the genome annotation using the nanopore and pacbio under one rust binary
  - this code will be updated regularly. 
 
@@ -7,10 +7,10 @@
  ```
 
  ```
- 12:29:37 gauravsablok@genome nanopore-pacbio-all main ? ./target/debug/nanopore-pacbio-all -h
- nanoporepacbio
+ 13:53:40 gauravsablok@genome nanopore-pacbio-all main ? ./target/debug/panscape -h
+ panscape: analyzing pangenomes from reads to stats
 
- Usage: nanopore-pacbio-all <COMMAND>
+ Usage: panscape <COMMAND>
 
  Commands:
   fasta-convert        convert into fasta
@@ -25,10 +25,18 @@
   minimap              annotate reads
   stat                 annotated stats for your file
   pangenome-summarize  pangenome pre-computed alignment
+  read-multisearch     multisearch reads across the reads
+  paf-annotate         annotate your pangenome paf alignment using gtf
+  harmonicmean         estimate the harmonic mean from the pangenome
+  pangenome-matcher    pangenome matcher
+  pan-arc              pangenome annotator
+  snatcher             extract specific region from paf alignment
+  precomputed-paf      generate stats from precomputed paf
   help                 Print this message or the help of the given subcommand(s)
 
  Options:
   -h, --help     Print help
   -V, --version  Print version
+
  ```
  Gaurav Sablok

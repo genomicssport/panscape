@@ -1,6 +1,10 @@
 use clap::{Parser, Subcommand};
 #[derive(Debug, Parser)]
-#[command(name = "nanoporepacbio", version = "1.0", about = "nanoporepacbio")]
+#[command(
+    name = "panscape",
+    version = "1.0",
+    about = "panscape: analyzing pangenomes from reads to stats"
+)]
 pub struct CommandParse {
     /// subcommands for the specific actions
     #[command(subcommand)]
@@ -96,5 +100,52 @@ pub enum Commands {
     PangenomeSummarize {
         /// path to the pangenome alignment
         pangenome: String,
+    },
+    /// multisearch reads across the reads
+    ReadMultisearch {
+        /// path to the sequenced reads or genome file.
+        readsgenome: String,
+        /// search pattern for the multi search
+        multisearch: String,
+    },
+    /// annotate your pangenome paf alignment using gtf
+    PafAnnotate {
+        /// path to the pafalignment
+        pafalignment: String,
+        /// path to the gtf/gff file
+        gfffile: String,
+    },
+    /// estimate the harmonic mean from the pangenome
+    Harmonicmean {
+        /// path to the pangenome alignment
+        pafalignment: String,
+    },
+    /// pangenome matcher
+    PangenomeMatcher {
+        /// path to the first pangenomefile
+        pafgenome1: String,
+        /// path to the second pangenomefile
+        pafgenome2: String,
+    },
+    /// pangenome annotator
+    PanArc {
+        /// path to the pangenome alignment
+        pafalignment: String,
+        /// path to the fasta file,
+        fastafile: String,
+    },
+    /// extract specific region from paf alignment
+    Snatcher {
+        /// pafalignment file
+        pafalignment: String,
+        /// query fasta file
+        queryfasta: String,
+        /// reference fasta
+        referencefasta: String,
+    },
+    /// generate stats from precomputed paf
+    PrecomputedPaf {
+        /// path to the pre computed alignment
+        graphalignment: String,
     },
 }
