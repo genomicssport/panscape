@@ -1,8 +1,5 @@
 # nanopore-pacbio-all
- - rust oxford and nanopore algorithm implementation
- - added genome assembly for pangenome and pangenome annotation using the protein alignment. 
- - from alignments to pangenome, metagenome brining all the nanopore and pacbio under one rust binary
- - all skiplist implementation, Btree, Stree, implementation along with the rayon multithreaded. 
+ - from reads to alignments to pangenome, metagenome inclduing the genome annotation using the nanopore and pacbio under one rust binary
  - this code will be updated regularly. 
 
  ```
