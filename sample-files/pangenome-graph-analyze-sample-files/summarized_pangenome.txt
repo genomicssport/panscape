@@ -1,0 +1,9 @@
+Results have been written:
+number_segment:8
+number_links:11
+number_arc:22
+number_rank:2
+total_segment_length:17572
+average_segment_length:2196
+sum_0_segment_length:16569
+

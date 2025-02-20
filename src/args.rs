@@ -148,4 +148,28 @@ pub enum Commands {
         /// path to the pre computed alignment
         graphalignment: String,
     },
+    /// extract the coding regions from the precomputed pangenome.
+    PrecomputeCDS {
+        /// path to the pafalignment from miniprot
+        pathfileminiprot: String,
+        /// path to the reads in fasta format
+        readsfasta: String,
+    },
+    /// graph analyzer
+    Graph {
+        /// path to the graph analyze
+        graph: String,
+    },
+    /// Pangenome bed constructor
+    PangenomeBed {
+        /// path to the graph file
+        graph: String,
+    },
+    /// Intergenic extractor
+    IntergenicNoncoding {
+        /// graph alignment file
+        graph: String,
+        /// reads or fasta file
+        readsfasta: String,
+    },
 }

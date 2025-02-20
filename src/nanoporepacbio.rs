@@ -90,7 +90,7 @@ pub struct Tableinformation {
 
 pub struct Multiplepattern<'a> {
     pub name: &'a String,
-    pub collectionvec: &'a Vec<String>,
+    pub collectionvec: Vec<(usize, usize)>,
 }
 
 #[derive(Debug, Clone, PartialOrd, PartialEq)]
@@ -222,4 +222,67 @@ pub struct NEGATIVE {
     pub id: String,
     pub seq: String,
     pub strand: String,
+}
+
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
+pub struct CdsExtract<'a> {
+    pub header: &'a String,
+    pub cdsordinate: Vec<(usize, usize)>,
+}
+
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
+pub struct CdsExtractSeq<'a> {
+    pub header: &'a String,
+    pub cdsordinate: Vec<(usize, usize)>,
+    pub cdsextract: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
+pub struct Segments {
+    pub segment: String,
+    pub id: String,
+    pub seq: String,
+    pub tag: String,
+    pub aligntag: String,
+    pub alignmenttag: String,
+}
+
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
+pub struct Links {
+    pub link: String,
+    pub id1: String,
+    pub strand1: String,
+    pub id2: String,
+    pub strand2: String,
+    pub tag: String,
+    pub arc: String,
+}
+
+#[derive(Debug, Default, Clone, PartialOrd, PartialEq)]
+pub struct FinalWrite {
+    pub number_segment: usize,
+    pub number_links: usize,
+    pub number_arc: usize,
+    pub max_rank: usize,
+    pub total_segment_length: usize,
+    pub average_segment_length: usize,
+    pub sum_0_segment_length: usize,
+}
+
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
+pub struct Segment {
+    pub segment: String,
+    pub id: String,
+    pub seq: String,
+    pub connection: String,
+    pub tag: String,
+}
+
+#[derive(Debug, Default, Clone, PartialOrd, PartialEq)]
+pub struct Analyze {
+    pub tag: String,
+    pub start: usize,
+    pub end: usize,
+    pub oritag: String,
+    pub rank: usize,
 }

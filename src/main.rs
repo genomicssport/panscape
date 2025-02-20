@@ -1,10 +1,14 @@
 mod args;
+mod bed;
+mod cdsextract;
 mod clipper;
 mod clipseq;
 mod estimate;
 mod fastaconvert;
 mod filesplitpattern;
 mod filter;
+mod graph;
+mod intergenic;
 mod matcher;
 mod minimap;
 mod motifcatcher;
@@ -23,11 +27,15 @@ mod snatcher;
 mod stat;
 use crate::args::CommandParse;
 use crate::args::Commands;
+use crate::bed::graph_bed_segment;
+use crate::cdsextract::computecds;
 use crate::clipper::clipperpattern;
 use crate::clipseq::clipseqa;
 use crate::estimate::harmonicestimate;
 use crate::fastaconvert::fastaconvertall;
 use crate::filter::readlength;
+use crate::graph::graph_args_segment;
+use crate::intergenic::computeintergenic;
 use crate::matcher::paf_alignments;
 use crate::minimap::minimapalignment;
 use crate::motifcatcher::motifcatcherupdown;
@@ -36,14 +44,13 @@ use crate::multiclipseq::multiclipseqa;
 use crate::multisearch::multisearchregex;
 use crate::pafannotate::annotatepaf;
 use crate::pafpangenome::pangenome_summarize;
+use crate::panarc::metagenome_annotate;
 use crate::pangenome::pangenome_hifiasm;
 use crate::precomputed::precomputealignments;
 use crate::selectedreads::selected;
 use crate::snatcher::snatcherextract;
 use crate::stat::stats;
-
 use clap::Parser;
-use panarc::metagenome_annotate;
 /*
  Author Gaurav Sablok
  SLB Potsdam
@@ -172,7 +179,7 @@ fn main() {
             pafalignment,
             fastafile,
         } => {
-            let command = metagenome_annotate(&pafalignment, fastafile).unwrap();
+            let command = metagenome_annotate(pafalignment, fastafile).unwrap();
             println!("The panarc has been completed: {:?}", command);
         }
         Commands::Snatcher {
@@ -184,8 +191,49 @@ fn main() {
             println!("The reference snatcher has been completed:{:?}", command);
         }
         Commands::PrecomputedPaf { graphalignment } => {
-            let command = precomputealignments(&graphalignment).unwrap();
+            let command = precomputealignments(graphalignment).unwrap();
             println!("The precomputed alignment have been written:{:?}", command);
+        }
+        Commands::PrecomputeCDS {
+            pathfileminiprot,
+            readsfasta,
+        } => {
+            let command = computecds(pathfileminiprot, readsfasta).unwrap();
+            println!(
+                "The cds regions from the precomputed alignment have been written:{:?}",
+                command
+            );
+        }
+        Commands::Graph { graph } => {
+            let command = graph_args_segment(graph).unwrap();
+            for i in command.iter() {
+                println!(
+            "Results have been written:\nnumber_segment:{}\nnumber_links:{}\nnumber_arc:{}\nnumber_rank:{}\ntotal_segment_length:{}\naverage_segment_length:{}\nsum_0_segment_length:{}\n",
+            i.number_segment,
+            i.number_links,
+            i.number_arc,
+            i.max_rank,
+            i.total_segment_length,
+            i.average_segment_length,
+            i.sum_0_segment_length
+        );
+            }
+        }
+        Commands::PangenomeBed { graph } => {
+            let command = graph_bed_segment(graph).unwrap();
+            for i in command.iter() {
+                println!(
+                    "{:?}\t{:?}\t{:?}\t{:?}\t{:?}",
+                    i.tag, i.start, i.end, i.oritag, i.rank
+                );
+            }
+        }
+        Commands::IntergenicNoncoding { graph, readsfasta } => {
+            let command = computeintergenic(graph, readsfasta).unwrap();
+            println!(
+                "The intergenic regions have been extracted for non-coding annotations:{:?}",
+                command
+            );
         }
     }
 }

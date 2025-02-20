@@ -1,5 +1,6 @@
 # panscape
  - from reads to alignments to pangenome, metagenome inclduing the genome annotation using the nanopore and pacbio under one rust binary
+ - this will also creates the pangenome database and also the pangenome reads database for rest api. 
  - this code will be updated regularly. 
 
  ```
@@ -7,7 +8,7 @@
  ```
 
  ```
- 13:53:40 gauravsablok@genome nanopore-pacbio-all main ? ./target/debug/panscape -h
+ gauravsablok@genome panscape main ? ./target/debug/panscape -h
  panscape: analyzing pangenomes from reads to stats
 
  Usage: panscape <COMMAND>
@@ -32,11 +33,13 @@
   pan-arc              pangenome annotator
   snatcher             extract specific region from paf alignment
   precomputed-paf      generate stats from precomputed paf
+  precompute-cds       extract the coding regions from the precomputed pangenome
+  graph                graph analyzer
+  pangenome-bed        Pangenome bed constructor
   help                 Print this message or the help of the given subcommand(s)
 
  Options:
   -h, --help     Print help
   -V, --version  Print version
-
  ```
  Gaurav Sablok
