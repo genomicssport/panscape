@@ -51,6 +51,7 @@ use crate::selectedreads::selected;
 use crate::snatcher::snatcherextract;
 use crate::stat::stats;
 use clap::Parser;
+use pangenomereadsdatabase::readsdatabase;
 /*
  Author Gaurav Sablok
  SLB Potsdam
@@ -234,6 +235,10 @@ fn main() {
                 "The intergenic regions have been extracted for non-coding annotations:{:?}",
                 command
             );
+        }
+        Commands::PanReadsDatabase { fastafile } => {
+            let command = readsdatabase(fastafile).unwrap();
+            println!("The reads database has been generated: {:?}", command);
         }
     }
 }

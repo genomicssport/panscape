@@ -172,4 +172,9 @@ pub enum Commands {
         /// reads or fasta file
         readsfasta: String,
     },
+    /// pangenome database
+    PanReadsDatabase {
+        /// path to the sequenced reads
+        fastafile: String,
+    },
 }
