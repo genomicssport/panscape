@@ -1,10 +1,10 @@
 use crate::nanoporepacbio::{
-    AlignmentGFF, CaptureSeq, Negative, Positive, Sequenceadd, CDS, MRNA, NEGATIVE, POSITIVE,
+    AlignmentGFF, CdsAnnotate, MrnaAnnotate, Negative, NegativeAnnotate, Positive,
+    PositiveAnnotate, Sequenceadd,
 };
 use std::error::Error;
 use std::fs::File;
 use std::io::{BufRead, BufReader, Write};
-#[allow(dead_code)]
 
 /*
 
@@ -18,7 +18,7 @@ given an metagenome and the alignment files, will write all the annotations.
 pub fn metagenome_annotate(path: &str, fasta: &str) -> Result<String, Box<dyn Error>> {
     let mut vectorhold = Vec::new();
     let mut vectorstring: Vec<AlignmentGFF> = Vec::new();
-    let f = File::open(&path).expect("file not present");
+    let f = File::open(path).expect("file not present");
     let read = BufReader::new(f);
     for gffreadline in read.lines() {
         let gffline = gffreadline.expect("line not present");
@@ -80,7 +80,7 @@ pub fn metagenome_annotate(path: &str, fasta: &str) -> Result<String, Box<dyn Er
 
     let mut header = vec![];
     let mut sequence = vec![];
-    let f = File::open(&fasta).expect("file not present");
+    let f = File::open(fasta).expect("file not present");
     let read = BufReader::new(f);
     for i in read.lines() {
         let line = i.expect("line not present");
@@ -99,14 +99,14 @@ pub fn metagenome_annotate(path: &str, fasta: &str) -> Result<String, Box<dyn Er
         })
     }
 
-    let mut mRNAstruct: Vec<MRNA> = Vec::new();
+    let mut m_rna_struct: Vec<MrnaAnnotate> = Vec::new();
     for i in final_seq.iter_mut() {
         for j in vectorstring.iter_mut() {
             if j.genomefeature == "mRNA" {
                 let mutablename = j.id.to_string();
                 let mutablestring = i.sequence[j.start - 1..j.end].to_string();
                 let mutablestrand = j.strand.to_string();
-                mRNAstruct.push(MRNA {
+                m_rna_struct.push(MrnaAnnotate {
                     id: mutablename,
                     seq: mutablestring,
                     strand: mutablestrand,
@@ -115,14 +115,14 @@ pub fn metagenome_annotate(path: &str, fasta: &str) -> Result<String, Box<dyn Er
         }
     }
 
-    let mut cdsstruct: Vec<CDS> = Vec::new();
+    let mut cdsstruct: Vec<CdsAnnotate> = Vec::new();
     for i in final_seq.iter_mut() {
         for j in vectorstring.iter_mut() {
             if j.genomefeature == "CDS" {
                 let mutablename = j.id.to_string();
                 let mutablestring = i.sequence[j.start - 1..j.end].to_string();
                 let mutablestrand = j.strand.to_string();
-                cdsstruct.push(CDS {
+                cdsstruct.push(CdsAnnotate {
                     id: mutablename,
                     seq: mutablestring,
                     strand: mutablestrand,
@@ -131,14 +131,14 @@ pub fn metagenome_annotate(path: &str, fasta: &str) -> Result<String, Box<dyn Er
         }
     }
 
-    let mut positive: Vec<POSITIVE> = Vec::new();
+    let mut positive: Vec<PositiveAnnotate> = Vec::new();
     for i in final_seq.iter_mut() {
         for j in vectorstring.iter_mut() {
             if j.genomefeature == "CDS" && j.strand == "+" {
                 let mutablename = j.id.to_string();
                 let mutablestring = i.sequence[j.start - 1..j.end].to_string();
                 let mutablestrand = j.strand.to_string();
-                positive.push(POSITIVE {
+                positive.push(PositiveAnnotate {
                     id: mutablename,
                     seq: mutablestring,
                     strand: mutablestrand,
@@ -147,14 +147,14 @@ pub fn metagenome_annotate(path: &str, fasta: &str) -> Result<String, Box<dyn Er
         }
     }
 
-    let mut negative: Vec<NEGATIVE> = Vec::new();
+    let mut negative: Vec<NegativeAnnotate> = Vec::new();
     for i in final_seq.iter_mut() {
         for j in vectorstring.iter_mut() {
             if j.genomefeature == "CDS" && j.strand == "-" {
                 let mutablename = j.id.to_string();
                 let mutablestring = i.sequence[j.start - 1..j.end].to_string();
                 let mutablestrand = j.strand.to_string();
-                negative.push(NEGATIVE {
+                negative.push(NegativeAnnotate {
                     id: mutablename,
                     seq: mutablestring,
                     strand: mutablestrand,
@@ -168,7 +168,7 @@ pub fn metagenome_annotate(path: &str, fasta: &str) -> Result<String, Box<dyn Er
     let mut cds_length_positive: Vec<usize> = Vec::new();
     let mut cds_length_negative: Vec<usize> = Vec::new();
 
-    for i in mRNAstruct.iter_mut() {
+    for i in m_rna_struct.iter_mut() {
         let lengthmut = i.seq.len();
         mrna_length.push(lengthmut);
     }
@@ -189,23 +189,23 @@ pub fn metagenome_annotate(path: &str, fasta: &str) -> Result<String, Box<dyn Er
     }
 
     let mut mrna_file = File::create("mRNA.fasta").expect("file not present");
-    for i in mRNAstruct.iter_mut() {
-        writeln!(mrna_file, ">{}\n{}", i.id, i.seq);
+    for i in m_rna_struct.iter_mut() {
+        writeln!(mrna_file, ">{}\n{}", i.id, i.seq).expect("line not found");
     }
 
     let mut cds_file = File::create("cds.fasta").expect("file not present");
     for i in cdsstruct.iter_mut() {
-        writeln!(cds_file, ">{}\n{}", i.id, i.seq);
+        writeln!(cds_file, ">{}\n{}", i.id, i.seq).expect("line not found");
     }
 
     let mut cds_positive = File::create("cds-positive.fasta").expect("file not present");
     for i in positive.iter_mut() {
-        writeln!(cds_positive, ">{}\n{}", i.id, i.seq);
+        writeln!(cds_positive, ">{}\n{}", i.id, i.seq).expect("line not found");
     }
 
     let mut cds_negative = File::create("cds-negative.fasta").expect("file not present");
     for i in negative.iter_mut() {
-        writeln!(cds_negative, ">{}\n{}", i.id, i.seq);
+        writeln!(cds_negative, ">{}\n{}", i.id, i.seq).expect("line not found");
     }
     Ok("The panarc has been completed".to_string())
 }

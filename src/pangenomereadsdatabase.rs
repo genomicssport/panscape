@@ -2,6 +2,13 @@ use crate::filesplitpattern::fastareturn;
 use rusqlite::{Connection, Result};
 use std::error::Error;
 
+/*
+  Author Gaurav Sablok
+  SLB Potsdam
+  Date: 2025-2-21
+
+*/
+
 pub fn readsdatabase(pathreads: &str) -> Result<String, Box<dyn Error>> {
     let sequencereads = fastareturn(pathreads).unwrap();
     let conn = Connection::open("pangenomereads.db")?;

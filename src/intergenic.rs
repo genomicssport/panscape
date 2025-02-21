@@ -9,7 +9,7 @@ use std::io::{BufRead, BufReader};
 /*
  Author Gaurav Sablok
  SLB Potsdam
- Date: 2025-2-20
+ Date: 2025-2-21
 
 */
 
@@ -55,28 +55,30 @@ pub fn computeintergenic(
         }
     }
 
-    for i in uniqueids.iter() {
-        for j in linevecstore.iter() {
-            for seq in sequenceundone.iter() {
-                let linecheck = j.split("\t").collect::<Vec<_>>();
-                if linecheck[0] == i && linecheck[2] == "CDS" && linecheck[0] == seq.header {
-                    let mut cdsall: Vec<(usize, usize)> = Vec::new();
-                    let cootuple: (usize, usize) = (
-                        linecheck[3].parse::<usize>().unwrap(),
-                        linecheck[4].parse::<usize>().unwrap(),
-                    );
-                    let mut cdsseq: Vec<String> = Vec::new();
-                    cdsall.push(cootuple);
-                    cdsseq.push(
-                        seq.sequence[linecheck[3].parse::<usize>().unwrap()
-                            ..linecheck[4].parse::<usize>().unwrap()]
-                            .to_string(),
+    let mut intergenicslice: Vec<Vec<usize>> = Vec::new();
+
+    for i in extract.iter() {
+        let mut cummulativelenghtdifference: Vec<usize> = Vec::new();
+        for j in 0..i.cdsordinate.len() - 1 {
+            let vecinfo = i.cdsordinate[j + 1].0 - i.cdsordinate[j].1;
+            cummulativelenghtdifference.push(vecinfo);
+        }
+        intergenicslice.push(cummulativelenghtdifference);
+    }
+
+    for i in extract.iter() {
+        for j in sequenceundone.iter() {
+            for coor in 0..i.cdsordinate.len() - 1 {
+                if i.header.to_string() == j.header.to_string() {
+                    let mut analyzevec: Vec<String> = Vec::new();
+                    analyzevec.push(
+                        j.sequence[i.cdsordinate[coor].1..i.cdsordinate[coor + 1].1].to_string(),
                     );
                     extractseq.push(CdsExtractSeq {
-                        header: i,
-                        cdsordinate: cdsall.clone(),
-                        cdsextract: cdsseq.clone(),
-                    })
+                        header: i.header,
+                        cdsordinate: i.cdsordinate.clone(),
+                        cdsextract: analyzevec,
+                    });
                 }
             }
         }

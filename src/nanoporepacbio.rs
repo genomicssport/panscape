@@ -198,27 +198,27 @@ pub struct CaptureSeq {
     pub strand: String,
 }
 #[derive(Debug, Clone, PartialOrd, PartialEq)]
-pub struct MRNA {
+pub struct MrnaAnnotate {
     pub id: String,
     pub seq: String,
     pub strand: String,
 }
 #[derive(Debug, Clone, PartialOrd, PartialEq)]
-pub struct CDS {
-    pub id: String,
-    pub seq: String,
-    pub strand: String,
-}
-
-#[derive(Debug, Clone, PartialOrd, PartialEq)]
-pub struct POSITIVE {
+pub struct CdsAnnotate {
     pub id: String,
     pub seq: String,
     pub strand: String,
 }
 
 #[derive(Debug, Clone, PartialOrd, PartialEq)]
-pub struct NEGATIVE {
+pub struct PositiveAnnotate {
+    pub id: String,
+    pub seq: String,
+    pub strand: String,
+}
+
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
+pub struct NegativeAnnotate {
     pub id: String,
     pub seq: String,
     pub strand: String,

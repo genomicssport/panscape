@@ -1,4 +1,4 @@
-use crate::nanoporepacbio::{Alignment, Code};
+use crate::nanoporepacbio::Alignment;
 use cmd_lib::run_cmd;
 use cmd_lib::run_fun;
 use std::collections::HashSet;
@@ -20,7 +20,7 @@ pub fn pangenome_hifiasm<'a>(
     thread: &'a i32,
     proteinfasta: &'a str,
 ) -> Result<String, Box<dyn Error>> {
-    fs::create_dir("pangenome_assemble").unwrap();
+    let _ = fs::create_dir("pangenome_assemble");
     let assemblerpath = Path::new("./pangenome_assemble");
     set_current_dir(assemblerpath).expect("dir not found");
     let _newwrite = std::process::Command::new("git clone https://github.com/chhylp123/hifiasm");
@@ -42,13 +42,14 @@ pub fn pangenome_hifiasm<'a>(
      | awk r#"awk '/^S/{print ">"$2;print $3}' assembled-genome.gfa > assembled-genome.fasta"#
      | awk r#"'/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);} END {printf("\n");}'
                                           assembled-genome.fasta > final-genome-assembled.fasta"#
-    );
+    )
+    .unwrap();
     println!(
         r#"genome assembly linear fasta failed and the assembled genome
                                      in the graph format is present in the assembled-genome.gfa"#
     );
 
-    fs::create_dir("./genome_completeness").expect("directory not found");
+    let _ = fs::create_dir("./genome_completeness");
     let path_genome = Path::new("./pangenome/genome_completeness");
     let final_assembly =
         String::from("./pangenome/genome_completeness/final-genome-assembled.fasta");
@@ -74,15 +75,16 @@ pub fn pangenome_hifiasm<'a>(
         .spawn()
         .expect("completeness failed");
 
-    fs::create_dir_all("./pangenome/genome_annotations");
+    let _ = fs::create_dir_all("./pangenome/genome_annotations");
     let annotation_path = Path::new("./pangenome/genome_annotations");
-    set_current_dir(&annotation_path);
+    let _ = set_current_dir(annotation_path);
     run_cmd!(
         bash -c "git clone https://github.com/lh3/miniprot"
         | cd miniprot | make
         | mv miniprot ../
         | echo "miniprot has been installed"
-    );
+    )
+    .unwrap();
     let final_assembly =
         String::from("./pangenome/genome_completeness/final-genome-assembled.fasta");
     let _protein_annotations = std::process::Command::new("miniprot")
@@ -99,8 +101,8 @@ pub fn pangenome_hifiasm<'a>(
 
     let final_assembly =
         String::from("./pangenome/genome_completeness/final-genome-annotations.gff");
-    let mut file = File::open(&final_assembly).expect("file not found");
-    let mut reader = BufReader::new(&file);
+    let file = File::open(&final_assembly).expect("file not found");
+    let reader = BufReader::new(&file);
     let mut mrna_alignment_vec: Vec<Alignment> = Vec::new();
     for line in reader.lines() {
         let genomeiter = line.expect("line not present").clone();
@@ -117,9 +119,9 @@ pub fn pangenome_hifiasm<'a>(
         }
     }
     let final_assembly = String::from("./pangenome/genome_completeness/final-genome-assembled.gff");
-    let mut parentid: HashSet<&str> = HashSet::new();
-    let mut file = File::open(&final_assembly).expect("file not present");
-    let mut fileread = BufReader::new(&file);
+    let parentid: HashSet<&str> = HashSet::new();
+    let file = File::open(&final_assembly).expect("file not present");
+    let fileread = BufReader::new(&file);
     for line in fileread.lines() {
         let genomesec = line.expect("file not present");
         let genomepart = genomesec.split(" ").collect::<Vec<&str>>()[2];
