@@ -204,4 +204,13 @@ pub enum Commands {
         /// please provide the path to the reference fasta file
         fasta: String,
     },
+    /// bedtools sncestral multi-pangenome
+    MultiBedtoolsAncestral {
+        /// please provide the path to the first alignment file
+        alignment: String,
+        /// please provide the reference fasta file
+        fastafile: String,
+        /// please provide the path to the prank for the ancestal state
+        pathprank: String,
+    },
 }

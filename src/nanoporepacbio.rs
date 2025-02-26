@@ -417,3 +417,11 @@ pub struct MergeFasta {
     pub end1: usize,
     pub mergedseq: String,
 }
+
+#[derive(Debug, Clone, PartialOrd, PartialEq)]
+pub struct BedtoolsRangeMulti {
+    pub alignedref: String,
+    pub alignedstart: usize,
+    pub alignedend: usize,
+    pub difference: usize,
+}

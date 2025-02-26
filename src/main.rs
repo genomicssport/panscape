@@ -15,6 +15,7 @@ mod minimap;
 mod motifcatcher;
 mod motifone;
 mod multiclipseq;
+mod multimerge;
 mod multisearch;
 mod nanoporepacbio;
 mod pafannotate;
@@ -45,6 +46,7 @@ use crate::minimap::minimapalignment;
 use crate::motifcatcher::motifcatcherupdown;
 use crate::motifone::motifsearch;
 use crate::multiclipseq::multiclipseqa;
+use crate::multimerge::pangenomemultialignment;
 use crate::multisearch::multisearchregex;
 use crate::pafannotate::annotatepaf;
 use crate::pafpangenome::pangenome_summarize;
@@ -262,6 +264,14 @@ fn main() {
         }
         Commands::PangenomeSingleMerge { bed1, fasta } => {
             let output = pangenome_merge(bed1, fasta).unwrap();
+            println!("Results have been written:{}", output);
+        }
+        Commands::MultiBedtoolsAncestral {
+            alignment,
+            fastafile,
+            pathprank,
+        } => {
+            let output = pangenomemultialignment(alignment, fastafile, pathprank).unwrap();
             println!("Results have been written:{}", output);
         }
     }
