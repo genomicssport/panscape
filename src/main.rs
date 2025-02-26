@@ -1,5 +1,6 @@
 mod args;
 mod bed;
+mod bedpangenome;
 mod cdsextract;
 mod clipper;
 mod clipseq;
@@ -23,11 +24,14 @@ mod pangenome;
 mod pangenomereadsdatabase;
 mod precomputed;
 mod selectedreads;
+mod singlemerge;
 mod snatcher;
 mod stat;
+mod vcf;
 use crate::args::CommandParse;
 use crate::args::Commands;
 use crate::bed::graph_bed_segment;
+use crate::bedpangenome::pangenome_longest_alignment;
 use crate::cdsextract::computecds;
 use crate::clipper::clipperpattern;
 use crate::clipseq::clipseqa;
@@ -48,8 +52,10 @@ use crate::panarc::metagenome_annotate;
 use crate::pangenome::pangenome_hifiasm;
 use crate::precomputed::precomputealignments;
 use crate::selectedreads::selected;
+use crate::singlemerge::pangenome_merge;
 use crate::snatcher::snatcherextract;
 use crate::stat::stats;
+use crate::vcf::vcf_compare;
 use clap::Parser;
 use pangenomereadsdatabase::readsdatabase;
 /*
@@ -239,6 +245,24 @@ fn main() {
         Commands::PanReadsDatabase { fastafile } => {
             let command = readsdatabase(fastafile).unwrap();
             println!("The reads database has been generated: {:?}", command);
+        }
+        Commands::BedtoolAncestral {
+            alignment,
+            fastafile,
+            threshold,
+            pathprank,
+        } => {
+            let output =
+                pangenome_longest_alignment(alignment, fastafile, *threshold, pathprank).unwrap();
+            println!("Results have been written:{}", output);
+        }
+        Commands::VcfAanalyze { vcf1, vcf2, fasta } => {
+            let output = vcf_compare(vcf1, vcf2, fasta).unwrap();
+            println!("Results have been written:{}", output);
+        }
+        Commands::PangenomeSingleMerge { bed1, fasta } => {
+            let output = pangenome_merge(bed1, fasta).unwrap();
+            println!("Results have been written:{}", output);
         }
     }
 }

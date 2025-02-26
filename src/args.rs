@@ -177,4 +177,31 @@ pub enum Commands {
         /// path to the sequenced reads
         fastafile: String,
     },
+    /// analyze pangenome from the bedtools alignment to ancestral state
+    BedtoolAncestral {
+        /// please provide the path to the first alignment file
+        alignment: String,
+        /// please provide the reference fasta file
+        fastafile: String,
+        /// please provide the alignment length to be used as a threshold
+        threshold: usize,
+        /// please provide the path to the prank for the ancestal state
+        pathprank: String,
+    },
+    /// analyze pangenome vcffiles
+    VcfAanalyze {
+        /// please provide the path to the first VCF file
+        vcf1: String,
+        /// please provide the path to the second VCF file
+        vcf2: String,
+        /// please provide the path to the fasta file.
+        fasta: String,
+    },
+    /// merge single pangenome bedfile
+    PangenomeSingleMerge {
+        /// please provide the path to the first alignment file
+        bed1: String,
+        /// please provide the path to the reference fasta file
+        fasta: String,
+    },
 }
