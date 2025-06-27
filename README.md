@@ -1,6 +1,6 @@
 # panscape
 
-  <img src="https://github.com/IBCHgenomic/eVaiutilities/blob/main/evaiUtilitieslogo.png" width="350" />
+  <img src="https://github.com/IBCHgenomic/panscape/blob/main/panscape.png" width="350" />
   
   ![](https://github.com/IBCHgenomic/eVaiutilities/blob/main/logo.png)
 
