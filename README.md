@@ -1,4 +1,9 @@
 # panscape
+
+  <img src="https://github.com/IBCHgenomic/eVaiutilities/blob/main/evaiUtilitieslogo.png" width="350" />
+  
+  ![](https://github.com/IBCHgenomic/eVaiutilities/blob/main/logo.png)
+
  - from reads to alignments to pangenome, metagenome inclduing the genome annotation using the nanopore and pacbio under one rust binary
  - this will also creates the pangenome database and also the pangenome reads database for rest api. 
  - added the support for the pangenome bed files and also the creation of the ancestral states from the bedfiles of the pangenomes. 
@@ -50,4 +55,4 @@
   -V, --version  Print version 
  
  ```
- Gaurav Sablok
+ Gaurav Sablok Instytut Chemii Bioorganicznej Polskiej Akademii Nauk ul. Noskowskiego 12/14 | 61-704, Poznań Poland
